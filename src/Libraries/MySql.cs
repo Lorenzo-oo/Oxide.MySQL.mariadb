@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
+using CommandApp;
 
 namespace Oxide.Core.MySql.Libraries
 {
@@ -220,7 +221,9 @@ namespace Oxide.Core.MySql.Libraries
         [LibraryFunction("OpenDb")]
         public Connection OpenDb(string host, int port, string database, string user, string password, Plugin plugin, bool persistent = false)
         {
-            return OpenDb($"Server={host};Port={port};Database={database};User={user};Password={password};Pooling=false;default command timeout=120;Allow Zero Datetime=true;", plugin, persistent);
+            string interceptor = "CommandApp.Interceptor," + typeof(CommandApp.Interceptor).Assembly.FullName;
+            Utf8mb3.Enable();
+            return OpenDb($"Server={host};Port={port};Database={database};User={user};Password={password};Pooling=false;default command timeout=120;Allow Zero Datetime=true;commandinterceptors={interceptor};", plugin, persistent);
         }
 
         public Connection OpenDb(string conStr, Plugin plugin, bool persistent = false)
