@@ -35,7 +35,6 @@ namespace CommandApp
 					try
 					{
 						mappingDictionary.Add("utf8mb3", utf8Mapping);
-                        mappingDictionary.Add("utf8mb4", utf8Mapping);
                     }
 					catch (ArgumentException)
 					{
