@@ -221,13 +221,13 @@ namespace Oxide.Core.MySql.Libraries
         [LibraryFunction("OpenDb")]
         public Connection OpenDb(string host, int port, string database, string user, string password, Plugin plugin, bool persistent = false)
         {
-            string interceptor = "CommandApp.Interceptor," + typeof(CommandApp.Interceptor).Assembly.FullName;
-            Utf8mb3.Enable();
-            return OpenDb($"Server={host};Port={port};Database={database};User={user};Password={password};Pooling=false;default command timeout=120;Allow Zero Datetime=true;commandinterceptors={interceptor};", plugin, persistent);
+            return OpenDb($"Server={host};Port={port};Database={database};User={user};Password={password};Pooling=false;default command timeout=120;Allow Zero Datetime=true;", plugin, persistent);
         }
 
         public Connection OpenDb(string conStr, Plugin plugin, bool persistent = false)
         {
+            Utf8mb3.Enable();
+            conStr += ";commandinterceptors=CommandApp.Interceptor," + typeof(CommandApp.Interceptor).Assembly.FullName;
             Dictionary<string, Connection> connections;
             if (!_connections.TryGetValue(plugin?.Name ?? "null", out connections))
             {
