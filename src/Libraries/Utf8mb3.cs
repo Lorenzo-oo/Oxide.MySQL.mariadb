@@ -10,7 +10,9 @@ namespace CommandApp
     ///    
     public static class Utf8mb3
 	{
-		private static readonly Version NewFieldNamingVersion = new Version(6, 10, 0);
+        // verified that starting version 6.10.0,  CharSetMap.mapping was changed to CharSetMap._mapping
+        // code will still work if MySql.Data.dll is upgraded
+        private static readonly Version NewFieldNamingVersion = new Version(6, 10, 0);
 		
 		public static void Enable()
 		{
@@ -35,6 +37,7 @@ namespace CommandApp
 					try
 					{
 						mappingDictionary.Add("utf8mb3", utf8Mapping);
+                        mappingDictionary.Add("utf8mb4", utf8Mapping);
                     }
 					catch (ArgumentException)
 					{
